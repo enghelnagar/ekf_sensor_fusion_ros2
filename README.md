@@ -94,3 +94,52 @@ self.R_odom = np.diag([0.05, 5.0])
 
 # R_imu: High relative trust (0.05) to override odometry's angular errors.
 self.R_imu = np.array([[0.05]])
+```
+
+### The "Golden Ratio" Sensor Fusion Insight
+By maintaining a **100:1 trust ratio** between the IMU gyroscope and the wheel encoder's angular tracking, the filter effectively isolates the mechanical wheel slip/asymmetry. The IMU bounds the immediate trajectory curvature, while the odometry acts as a long-term mathematical anchor preventing the IMU's constant bias from initiating unconstrained heading divergence.
+
+---
+
+## Comprehensive Statistical Error Analysis
+
+The analytical framework includes a dedicated 3-axis statistical dashboard built via Matplotlib to benchmark the system's performance:
+1. **Absolute Error Over Time:** Tracks the Euclidean distance divergence. It visually demonstrates that raw odometry error expands unboundedly (Drift), while the EKF effectively bounds error propagation.
+2. **Error Distribution (Histogram):** Quantifies error density. A tight, narrow Gaussian distribution shifted toward zero validates successful high-frequency Gaussian noise mitigation by the EKF.
+3. **Statistical Summary Boxplot:** Evaluates median error values, interquartile range (IQR), and outlier profiles, proving the filter's numerical stability.
+
+---
+
+## Compilation & Execution Guide
+
+### Prerequisites
+* ROS2 Humble / Iron / Jazzy installed.
+* Gazebo simulation binaries.
+* Python 3 with `numpy` and `matplotlib` dependencies.
+
+### 1. Build the Workspace
+Navigate to your ROS2 workspace root and execute the build sequence:
+```bash
+cd ~/workspace
+colcon build --packages-select ekf_experiment
+source install/setup.bash
+```
+
+### 2. Launch the Gazebo Environment & Robot Node
+Launch the core simulation architecture, which brings up the physical differential drive robot inside the virtual world:
+```bash
+ros2 launch ekf_experiment main_experiment.launch.py
+```
+
+### 3. Run the EKF Fusion Node
+In a separate terminal, trigger the custom state estimator:
+```bash
+ros2 run ekf_experiment ekf_fusion_node
+```
+
+### 4. Open the Jupyter Notebook Dashboard
+To run real-time visualization, calculate Root Mean Square Error (RMSE), and generate the statistical dashboard plots:
+```bash
+jupyter notebook
+```
+Open the notebook file inside the directory and run all cells sequentially to evaluate the tracking metrics.
