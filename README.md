@@ -29,15 +29,19 @@ Where:
 * ω: Body-frame angular velocity around the Z-axis in radians per second.
 
 ### Discrete-Time State Transition Model (Prediction Step)
-At each sample interval dt, the state vector is projected forward using the following non-linear difference equations:
+At each sample interval $\Delta t$, the state vector is projected forward using the following non-linear difference equations:
 
-x_k = x_{k-1} + v_{k-1} * cos(θ_{k-1}) * dt
-y_k = y_{k-1} + v_{k-1} * sin(θ_{k-1}) * dt
-θ_k = θ_{k-1} + ω_{k-1} * dt
-v_k = v_{k-1} + w_v
-ω_k = ω_{k-1} + w_ω
+$$x_k = x_{k-1} + v_{k-1} \cos(\theta_{k-1}) \Delta t$$
 
-Where w_v and w_ω are additive, zero-mean white Gaussian process noise components governed by the Process Noise Covariance Matrix (Q).
+$$y_k = y_{k-1} + v_{k-1} \sin(\theta_{k-1}) \Delta t$$
+
+$$\theta_k = \theta_{k-1} + \omega_{k-1} \Delta t$$
+
+$$v_k = v_{k-1} + w_v$$
+
+$$\omega_k = \omega_{k-1} + w_\omega$$
+
+Where $w_v$ and $w_\omega$ are additive, zero-mean white Gaussian process noise components governed by the Process Noise Covariance Matrix ($Q$).
 
 ---
 
