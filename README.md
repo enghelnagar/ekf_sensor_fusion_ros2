@@ -69,8 +69,8 @@ The measurement update handles incoming sensor observations asynchronously. The 
 The wheel encoders measure linear velocity (v) and angular velocity (ω) directly. The resulting mapping is linear, forming a 2x5 Jacobian matrix:
 
 H_odom = 
-[0  0  0  1  0]
-[0  0  0  0  1]
+$$[0  0  0  1  0]$$
+$$[0  0  0  0  1]$$
 
 #### Case B: IMU Gyroscope Observation Update
 The IMU isolates and measures only the body-frame rotational velocity (ω). The mapping forms a 1x5 row vector:
